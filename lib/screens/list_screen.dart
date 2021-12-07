@@ -53,7 +53,23 @@ class _ListScreenState extends State<ListScreen> {
                   ? [
                       IconButton(
                         icon: Icon(Icons.edit, color: Colors.blue),
-                        onPressed: () {},
+                        onPressed: () async {
+                          var tempData = widget.myNote[index];
+                          var result = await Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return NoteScreen(
+                                currentNote: widget.myNote.elementAt(index),
+                                chosen: "edit");
+                          }));
+
+                          if (result != null) {
+                            widget.myNote[index].update(result);
+                            setState(() {});
+                          } else if (result == null) {
+                            //widget.myNote[index].update(tempData);
+                          }
+                          setState(() {});
+                        },
                       ),
                       IconButton(
                         icon: Icon(

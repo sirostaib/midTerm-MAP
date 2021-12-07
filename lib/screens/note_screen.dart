@@ -8,6 +8,7 @@ import '../models/note.dart';
 
 class NoteScreen extends StatelessWidget {
   Note currentNote;
+  //Note initNote;
   String chosen;
   NoteScreen({this.currentNote, this.chosen});
   //NoteScreen.copy(this.currentNote, this.chosen, {String chosen});
@@ -17,20 +18,26 @@ class NoteScreen extends StatelessWidget {
       appBar: AppBar(
         leading: Container(),
         centerTitle: true,
-        title: Text(chosen.toString()),
+        title: chosen == "view" ? Text("View Note") : Text("Edit Note"),
         actions: [
-          IconButton(
-              icon: Icon(
-                Icons.check_circle,
-                size: 30,
-              ),
-              onPressed: () {}),
+          chosen != "view"
+              ? IconButton(
+                  icon: Icon(
+                    Icons.check_circle,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context, currentNote);
+                  })
+              : Text(""),
           IconButton(
               icon: Icon(
                 Icons.cancel_sharp,
                 size: 30,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.pop(context, null);
+              }),
         ],
       ),
       body: Container(
@@ -39,25 +46,29 @@ class NoteScreen extends StatelessWidget {
           children: [
             TextFormField(
               initialValue: currentNote.title,
-              enabled: false,
+              enabled: chosen == "view" ? false : true,
               decoration: InputDecoration(
                 hintText: 'Type the title here',
               ),
-              onChanged: (value) {},
+              onChanged: (value) {
+                currentNote.title = value;
+              },
             ),
             SizedBox(
               height: 5,
             ),
             Expanded(
               child: TextFormField(
-                  enabled: true,
-                  initialValue: null,
+                  enabled: chosen == "view" ? false : true,
+                  initialValue: currentNote.content,
                   maxLines: null,
                   expands: true,
                   decoration: InputDecoration(
                     hintText: 'Type the description',
                   ),
-                  onChanged: (value) {}),
+                  onChanged: (value) {
+                    currentNote.content = value;
+                  }),
             ),
           ],
         ),

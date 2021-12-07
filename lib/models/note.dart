@@ -8,4 +8,9 @@ class Note {
     this.title,
     this.content,
   });
+
+  update(Note ta) {
+    this.title = ta.title;
+    this.content = ta.content;
+  }
 }
