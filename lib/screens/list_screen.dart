@@ -73,7 +73,12 @@ class _ListScreenState extends State<ListScreen> {
           ),
           title: Text(widget.myNote[index].title),
           subtitle: subCheck ? Text(widget.myNote[index].content) : null,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return NoteScreen(
+                  currentNote: widget.myNote.elementAt(index), chosen: "view");
+            }));
+          },
           onLongPress: () {
             setState(() {
               buttonCheck[index] = !buttonCheck[index];
