@@ -2,6 +2,8 @@
 //! Parts of the code have been given. Complete the remaining.
 //? You can refactor the code if needed
 
+//import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:midterm_codebase/models/mock_data.dart';
 import 'note_screen.dart';
@@ -17,6 +19,8 @@ class ListScreen extends StatefulWidget {
 
 class _ListScreenState extends State<ListScreen> {
   var subCheck = true;
+  List<bool> buttonCheck = [false, false, false];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,32 +49,45 @@ class _ListScreenState extends State<ListScreen> {
             width: 110.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.blue,
-                  ),
-                  onPressed: () {},
-                ),
-              ],
+              children: buttonCheck[index]
+                  ? [
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.blue,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            widget.myNote.removeAt(index);
+                            buttonCheck.removeAt(index);
+                          });
+                        },
+                      ),
+                    ]
+                  : [],
             ),
           ),
           title: Text(widget.myNote[index].title),
           subtitle: subCheck ? Text(widget.myNote[index].content) : null,
           onTap: () {},
-          onLongPress: () {},
+          onLongPress: () {
+            setState(() {
+              buttonCheck[index] = !buttonCheck[index];
+            });
+          },
         ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-              child: Icon(Icons.unfold_less),
+              child: subCheck
+                  ? Icon(Icons.unfold_less)
+                  : Icon(Icons.format_align_justify),
               tooltip: 'Show less. Hide notes content',
               onPressed: () {
                 setState(() {
@@ -80,7 +97,13 @@ class _ListScreenState extends State<ListScreen> {
           FloatingActionButton(
             child: Icon(Icons.add),
             tooltip: 'Add a new note',
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                widget.myNote
+                    .add(Note(title: "new Note", content: "new note content"));
+                buttonCheck.add(false);
+              });
+            },
           ),
         ],
       ),
