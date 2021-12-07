@@ -5,15 +5,7 @@ class Note {
   String content;
 
   Note({
-    this.title = "Note",
-    this.content = "Text",
+    this.title,
+    this.content,
   });
-
-  @override
-  toString() {
-    return {
-      'title': title,
-      'content': content,
-    }.toString();
-  }
 }
